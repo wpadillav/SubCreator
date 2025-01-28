@@ -25,7 +25,7 @@ case $accion in
         # Crear archivo de configuración para Apache en /etc/apache2/sites-available
         echo "Creando archivo de configuracion https para el subdominio $subdominio \n"
         echo "<VirtualHost *:80>" > /etc/apache2/sites-available/$subdominio.$dominio.conf
-        echo "    ServerName $subdominio.misreclamaciones.com" >> /etc/apache2/sites-available/$subdominio.$dominio.conf
+        echo "    ServerName $subdominio.$dominio" >> /etc/apache2/sites-available/$subdominio.$dominio.conf
         echo "    Redirect permanent / https://$subdominio.$dominio/" >> /etc/apache2/sites-available/$subdominio.$dominio.conf
         echo "</VirtualHost>" >> /etc/apache2/sites-available/$subdominio.$dominio.conf
 
