@@ -15,7 +15,6 @@ subdominio=$2  # Nombre del subdominio
 dominio="nombre_domain.com"  # Nombre del dominio principal
 ruta_subdominio="/var/www/$subdominio"  # Ruta donde se almacenará el subdominio
 conf_file="/etc/apache2/sites-available/$subdominio.$dominio.conf"  # Archivo de configuración de Apache
-acciones_requieren_subdominio=("crear" "eliminar" "activar" "desactivar")
 
 # Generación de contraseña aleatoria para la base de datos
 passdb=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 15 | head -n 1)
@@ -25,15 +24,13 @@ passdb=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 15 | head -n 1)
 SSLCertificateFile="/etc/letsencrypt/live/$dominio/fullchain.pem"
 SSLCertificateKeyFile="/etc/letsencrypt/live/$dominio/privkey.pem"
 
-# Verificar si la acción está en la lista
-if [[ " ${acciones_requieren_subdominio[@]} " =~ " ${accion} " ]]; then
-    # Verificar si falta el nombre del subdominio
+# Validaciones previas para ciertas acciones
+if [ "$accion" == "crear" ] || [ "$accion" == "eliminar" ] || [ "$accion" == "activar" ] || [ "$accion" == "desactivar" ]; then
     if [ -z "$subdominio" ]; then
         echo "Error: Falta el nombre del subdominio."
         exit 1
     fi
-
-    # Validar el formato del subdominio (solo permite letras, números, guiones y guiones bajos)
+    # Validar el nombre del subdominio (solo permite letras, números, guiones y guiones bajos)
     if [[ ! "$subdominio" =~ ^[a-zA-Z0-9_-]+$ ]]; then
         echo "Error: Nombre de subdominio inválido."
         exit 1
