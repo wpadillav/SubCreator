@@ -133,7 +133,7 @@ EOF
         rm -rf "$ruta_subdominio"
         rm "$conf_file"
 
-        # Eliminar la base de datos y el usuario asociado
+        # Eliminar la base de datos y el usuario asociado 
         mariadb -u root -e "
             DROP DATABASE $subdominio;
             DROP USER '$subdominio'@'localhost';
