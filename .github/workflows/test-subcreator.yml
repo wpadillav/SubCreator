@@ -1,4 +1,4 @@
-name: Pruebas Automáticas de Calidad y Funcionalidad
+name: Pruebas Automáticas de Calidad y Funcionalidad 
 
 on:
   push:
