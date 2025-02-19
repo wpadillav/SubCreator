@@ -1,0 +1,28 @@
+name: CI - Test creador.sh
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: 🔍 Instalar dependencias (bats y shellcheck)
+        run: |
+          sudo apt update
+          sudo apt install -y bats shellcheck
+
+      - name: ✅ Ejecutar ShellCheck en creador.sh
+        run: shellcheck creador.sh
+
+      - name: 🧪 Ejecutar pruebas con Bats
+        run: bats tests/test_subcreator.bats
