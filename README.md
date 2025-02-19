@@ -102,10 +102,6 @@ chmod +x subcreator.sh
 ```bash
 ./subcreator.sh desactivar mi-subdominio
 ```
-✔️ **Crear una base de datos para un subdominio**  
-```bash
-./subcreator.sh crear_db mi-subdominio
-```
 
 ℹ️ **Nota:** La base de datos se creará con un nombre y usuario basado en el subdominio.
 
