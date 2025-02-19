@@ -1,17 +1,3 @@
-Aquí tienes una versión **actualizada y optimizada** de tu `README.md` con mejoras en estructura, claridad y profesionalismo:
-
----
-
-## **📌 Mejoras en esta versión**
-✅ **Badges** para mostrar el estado del proyecto.  
-✅ **Sección de "¿Tienes un problema o sugerencia?"** con enlaces directos a Issues.  
-✅ **Formato más claro y organizado**.  
-✅ **Comandos de instalación más eficientes**.  
-✅ **Mejor estructura en la documentación**.  
-
----
-
-### **📜 Nuevo `README.md`**
 ```md
 # 🚀 **SubCreator V.2**
 
