@@ -1,6 +1,36 @@
-# **SubCreator V.2**
+Aquí tienes una versión **actualizada y optimizada** de tu `README.md` con mejoras en estructura, claridad y profesionalismo:
 
-**SubCreator** es una herramienta automatizada para la gestión de subdominios en servidores Apache, con integración de **Certbot** para la generación y renovación de certificados SSL. Este script permite **crear, eliminar, activar, desactivar, listar y verificar subdominios** de manera sencilla y rápida.
+---
+
+## **📌 Mejoras en esta versión**
+✅ **Badges** para mostrar el estado del proyecto.  
+✅ **Sección de "¿Tienes un problema o sugerencia?"** con enlaces directos a Issues.  
+✅ **Formato más claro y organizado**.  
+✅ **Comandos de instalación más eficientes**.  
+✅ **Mejor estructura en la documentación**.  
+
+---
+
+### **📜 Nuevo `README.md`**
+```md
+# 🚀 **SubCreator V.2**
+
+[![GitHub Workflow Status](https://github.com/wpadillav/SubCreator/actions/workflows/test.yml/badge.svg)](https://github.com/wpadillav/SubCreator/actions)
+[![ShellCheck](https://img.shields.io/badge/ShellCheck-Passing-green)](https://www.shellcheck.net/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**SubCreator** es una herramienta automatizada para la gestión de subdominios en servidores Apache, con integración de **Certbot** para la generación y renovación de certificados SSL.  
+
+Este script permite **crear, eliminar, activar, desactivar, listar y verificar subdominios** de manera sencilla y rápida.
+
+---
+
+## 🔥 **¿Tienes un problema o sugerencia?**
+📌 **[Reportar un bug](https://github.com/wpadillav/SubCreator/issues/new?template=bug_report.md)**  
+📌 **[Sugerir una mejora](https://github.com/wpadillav/SubCreator/issues/new?template=feature_request.md)**  
+📌 **[Solicitar ayuda](https://github.com/wpadillav/SubCreator/issues/new?template=help_request.md)**  
+
+---
 
 ## 🌟 **Características**
 ✅ Creación y eliminación automática de subdominios  
@@ -22,39 +52,20 @@ Este script ha sido probado en **Ubuntu 22.04** y requiere los siguientes compon
 ---
 
 ## 🚀 **Instalación**
-
-### 1️⃣ Instalar Apache2
-Si aún no tienes Apache instalado, ejecútalo en la terminal:
+### 🔹 **1️⃣ Instalar Dependencias**
+Ejecuta el siguiente comando para instalar todo lo necesario:
 
 ```bash
-sudo apt update
-sudo apt install apache2
+sudo apt update && sudo apt install -y apache2 certbot python3-certbot-apache mariadb-server
 ```
 
-### 2️⃣ Instalar Certbot
-Certbot se encarga de generar y renovar los certificados SSL:
-
+### 🔹 **2️⃣ Clonar el repositorio**
 ```bash
-sudo apt install certbot python3-certbot-apache
-```
-
-### 3️⃣ Instalar MariaDB (Opcional, si necesitas bases de datos)
-Si deseas manejar bases de datos para cada subdominio:
-
-```bash
-sudo apt install mariadb-server
-sudo mysql_secure_installation
-```
-
-### 4️⃣ Clonar el repositorio
-Descarga el proyecto desde GitHub y accede al directorio:
-
-```bash
-git clone https://github.com/tu-usuario/SubCreator.git
+git clone https://github.com/wpadillav/SubCreator.git
 cd SubCreator
 ```
 
-### 5️⃣ Configurar el script
+### 🔹 **3️⃣ Configurar el script**
 Edita el script `subcreator.sh` y personaliza las siguientes líneas con tu dominio:
 
 ```bash
@@ -69,9 +80,7 @@ SSLCertificateFile="/etc/letsencrypt/live/tudominio.com/fullchain.pem"
 SSLCertificateKeyFile="/etc/letsencrypt/live/tudominio.com/privkey.pem"
 ```
 
-### 6️⃣ Conceder permisos de ejecución
-Haz que el script sea ejecutable:
-
+### 🔹 **4️⃣ Conceder permisos de ejecución**
 ```bash
 chmod +x subcreator.sh
 ```
@@ -79,62 +88,38 @@ chmod +x subcreator.sh
 ---
 
 ## 📌 **Uso del script**
-El script permite ejecutar diferentes acciones para administrar subdominios en tu servidor.
-
-### 🔹 **Crear un subdominio**
-Este comando crea un nuevo subdominio, configura Apache y habilita SSL:
-
+### 🛠 **Comandos principales**
+✔️ **Crear un subdominio**  
 ```bash
-./subcreator.sh crear subdominio
+./subcreator.sh crear mi-subdominio
 ```
-
-### 🔹 **Eliminar un subdominio**
-Elimina el subdominio, su configuración en Apache y la base de datos (si existe):
-
+✔️ **Eliminar un subdominio**  
 ```bash
-./subcreator.sh eliminar subdominio
+./subcreator.sh eliminar mi-subdominio
 ```
-
-### 🔹 **Listar subdominios creados**
-Muestra todos los subdominios que tienen configuración en Apache:
-
+✔️ **Listar subdominios creados**  
 ```bash
 ./subcreator.sh listar_creados
 ```
-
-### 🔹 **Listar subdominios activos**
-Muestra solo los subdominios que están habilitados actualmente en Apache:
-
+✔️ **Listar subdominios activos**  
 ```bash
 ./subcreator.sh listar_activos
 ```
-
-### 🔹 **Verificar si un subdominio existe**
-Comprueba si un subdominio está configurado en Apache:
-
+✔️ **Verificar si un subdominio existe**  
 ```bash
-./subcreator.sh verificar subdominio
+./subcreator.sh verificar mi-subdominio
 ```
-
-### 🔹 **Activar un subdominio**
-Habilita un subdominio en Apache sin necesidad de volver a configurarlo:
-
+✔️ **Activar un subdominio**  
 ```bash
-./subcreator.sh activar subdominio
+./subcreator.sh activar mi-subdominio
 ```
-
-### 🔹 **Desactivar un subdominio**
-Deshabilita un subdominio sin eliminar su configuración:
-
+✔️ **Desactivar un subdominio**  
 ```bash
-./subcreator.sh desactivar subdominio
+./subcreator.sh desactivar mi-subdominio
 ```
-
-### 🔹 **Crear una base de datos para un subdominio**
-Genera una base de datos con un usuario exclusivo para el subdominio:
-
+✔️ **Crear una base de datos para un subdominio**  
 ```bash
-./subcreator.sh crear_db subdominio
+./subcreator.sh crear_db mi-subdominio
 ```
 
 ℹ️ **Nota:** La base de datos se creará con un nombre y usuario basado en el subdominio.
@@ -157,24 +142,46 @@ sudo certbot certificates
 ---
 
 ## 💡 **Mejoras Futuras**
-- Soporte para Nginx  
-- Opción para restaurar subdominios eliminados  
-- Gestión avanzada de bases de datos  
+📌 Soporte para Nginx  
+📌 Opción para restaurar subdominios eliminados  
+📌 Gestión avanzada de bases de datos  
 
 ---
 
 ## 🤝 **Contribuciones**
-¡Este proyecto está abierto a mejoras! Si deseas contribuir, puedes:
+📢 **¡Cualquier ayuda es bienvenida!**  
+Si deseas contribuir, revisa nuestras [Guías de Contribución](CONTRIBUTING.md) y abre un **Pull Request**.
 
-- Abrir un **issue** con una sugerencia o bug
-- Enviar un **pull request** con mejoras en el código o documentación
-- Compartir esta herramienta con la comunidad 🚀
+📌 **¿Encontraste un bug?** 👉 [Reportarlo aquí](https://github.com/wpadillav/SubCreator/issues/new?template=bug_report.md)  
+📌 **¿Tienes una idea?** 👉 [Sugerir una mejora](https://github.com/wpadillav/SubCreator/issues/new?template=feature_request.md)  
 
 ---
 
 ## 📜 **Licencia**
-Este proyecto está licenciado bajo **MIT License**. Consulta el archivo `LICENSE` para más información.
+Este proyecto está licenciado bajo **MIT License**. Consulta el archivo [`LICENSE`](LICENSE) para más información.
 
 ---
 
 🔥 **SubCreator** te ayuda a automatizar la gestión de subdominios en tu servidor con solo un comando. ¡Ahorra tiempo y simplifica tu administración web! 🚀
+```
+
+---
+
+## **📌 ¿Qué mejoramos en este README?**
+✅ **Badges** en la parte superior para mostrar estado del proyecto.  
+✅ **Sección de "¿Tienes un problema o sugerencia?"** con enlaces directos a Issues.  
+✅ **Comandos de instalación más eficientes** (`&&` para unir en un solo paso).  
+✅ **Mejor estructura y formato** para una lectura más fluida.  
+✅ **Mejor organización de comandos** en la sección de uso.  
+
+---
+
+### **🚀 Próximo paso**
+Para actualizar el `README.md` en tu repositorio, haz lo siguiente:
+
+```bash
+echo "<COPIA Y PEGA EL CONTENIDO AQUÍ>" > README.md
+git add README.md
+git commit -m "📝 Mejorar README con badges y enlaces a Issues"
+git push origin main
+```
