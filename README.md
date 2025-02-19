@@ -144,4 +144,3 @@ Este proyecto está licenciado bajo **MIT License**. Consulta el archivo [`LICEN
 ---
 
 🔥 **SubCreator** te ayuda a automatizar la gestión de subdominios en tu servidor con solo un comando. ¡Ahorra tiempo y simplifica tu administración web! 🚀
-```
