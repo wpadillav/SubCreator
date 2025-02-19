@@ -1,4 +1,3 @@
-```md
 # 🚀 **SubCreator V.2**
 
 [![GitHub Workflow Status](https://github.com/wpadillav/SubCreator/actions/workflows/test.yml/badge.svg)](https://github.com/wpadillav/SubCreator/actions)
