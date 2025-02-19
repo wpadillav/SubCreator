@@ -145,24 +145,3 @@ Este proyecto está licenciado bajo **MIT License**. Consulta el archivo [`LICEN
 
 🔥 **SubCreator** te ayuda a automatizar la gestión de subdominios en tu servidor con solo un comando. ¡Ahorra tiempo y simplifica tu administración web! 🚀
 ```
-
----
-
-## **📌 ¿Qué mejoramos en este README?**
-✅ **Badges** en la parte superior para mostrar estado del proyecto.  
-✅ **Sección de "¿Tienes un problema o sugerencia?"** con enlaces directos a Issues.  
-✅ **Comandos de instalación más eficientes** (`&&` para unir en un solo paso).  
-✅ **Mejor estructura y formato** para una lectura más fluida.  
-✅ **Mejor organización de comandos** en la sección de uso.  
-
----
-
-### **🚀 Próximo paso**
-Para actualizar el `README.md` en tu repositorio, haz lo siguiente:
-
-```bash
-echo "<COPIA Y PEGA EL CONTENIDO AQUÍ>" > README.md
-git add README.md
-git commit -m "📝 Mejorar README con badges y enlaces a Issues"
-git push origin main
-```
