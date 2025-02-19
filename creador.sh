@@ -58,16 +58,16 @@ case $accion in
         cp -R /var/www/demo/* "$ruta_subdominio"
 
         # Limpiar archivos innecesarios en los directorios especificados
-        rm /var/www/$subdominio/archivos/data_archivos/*
-        rm /var/www/$subdominio/archivos/data_archivos/adicionales/*
-        rm /var/www/$subdominio/archivos/data_archivos/conformidades_firmados/*
-        rm /var/www/$subdominio/archivos/data_archivos/conformidades_originales/*
-        rm /var/www/$subdominio/archivos/data_archivos/archivos_consumidores/*
-        rm /var/www/$subdominio/archivos/data_archivos/documentos_firmados/*
-        rm /var/www/$subdominio/archivos/data_archivos/documentos_originales/*
-        rm /var/www/$subdominio/archivos/data_archivos/informes/*
-        rm /var/www/$subdominio/archivos/data_archivos/manuales/*
-        rm /var/www/$subdominio/archivos/temp/*
+        rm "/var/www/$subdominio/archivos/data_archivos/"*
+        rm "/var/www/$subdominio/archivos/data_archivos/adicionales/"*
+        rm "/var/www/$subdominio/archivos/data_archivos/conformidades_firmados/"*
+        rm "/var/www/$subdominio/archivos/data_archivos/conformidades_originales/"*
+        rm "/var/www/$subdominio/archivos/data_archivos/archivos_consumidores/"*
+        rm "/var/www/$subdominio/archivos/data_archivos/documentos_firmados/"*
+        rm "/var/www/$subdominio/archivos/data_archivos/documentos_originales/"*
+        rm "/var/www/$subdominio/archivos/data_archivos/informes/"*
+        rm "/var/www/$subdominio/archivos/data_archivos/manuales/"*
+        rm "/var/www/$subdominio/archivos/temp/"*
 
         # Establecer permisos y propietario adecuados
         chown -R www-data:www-data "$ruta_subdominio"
@@ -115,13 +115,13 @@ EOF
         "
 
         # Crear la base de datos demo y restaurar la copia de seguridad
-        mariadb-dump -u $subdominio -p"$passdb" demo > /var/www/$subdominio/demo.sql
+        mariadb-dump -u "$subdominio" -p"$passdb" demo > "/var/www/$subdominio/demo.sql"
         mariadb -u root -e "CREATE DATABASE $subdominio"
-        mariadb -u root $subdominio < /var/www/$subdominio/demo.sql
-        mariadb -u root $subdominio -e "TRUNCATE TABLE logs;";
+        mariadb -u root "$subdominio" < "/var/www/$subdominio/demo.sql"
+        mariadb -u root "$subdominio" -e "TRUNCATE TABLE logs;";
         mariadb -u root -e "GRANT ALL PRIVILEGES ON $subdominio.* TO '$subdominio'@'localhost'";
         mariadb -u root -e "FLUSH PRIVILEGES";
-        rm /var/www/$subdominio/demo.sql
+        rm "/var/www/$subdominio/demo.sql"
 
         # escribimos en un documento el nombre del subdominio para agregarlo al backup automatico de la base de datos
         echo "$subdominio" >> /backups/databases/databases.txt
@@ -193,7 +193,7 @@ EOF
         ;;
 
     "verificar")
-        if [ -f /etc/apache2/sites-available/$subdominio.$dominio.conf ]; then
+        if [ -f "/etc/apache2/sites-available/$subdominio.$dominio.conf" ]; then
             echo "true"
         else
             echo "false"
