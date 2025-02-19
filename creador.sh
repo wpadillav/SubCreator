@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Verificar si el script se está ejecutando como root
+#if [ "$EUID" -ne 0 ]; then
+#    echo "Error: Debes ejecutar este script como root."
+#    exit 1
+#fi
+
 # Instrucciones de uso
 # - Crear un subdominio: bash creador.sh crear subdominio
 # - Eliminar un subdominio: bash creador.sh eliminar subdominio
@@ -12,12 +18,12 @@
 # Definición de variables
 accion=$1  # Acción a ejecutar (crear, eliminar, listar, etc.)
 subdominio=$2  # Nombre del subdominio
-dominio="nombre_domain.com"  # Nombre del dominio principal
+dominio="dominioprincipal.com"  # Nombre del dominio principal
 ruta_subdominio="/var/www/$subdominio"  # Ruta donde se almacenará el subdominio
 conf_file="/etc/apache2/sites-available/$subdominio.$dominio.conf"  # Archivo de configuración de Apache
 
 # Generación de contraseña aleatoria para la base de datos
-passdb=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 15 | head -n 1)
+passdb="$(openssl rand -base64 12)"
 
 
 # Rutas de certificados SSL
@@ -25,7 +31,8 @@ SSLCertificateFile="/etc/letsencrypt/live/$dominio/fullchain.pem"
 SSLCertificateKeyFile="/etc/letsencrypt/live/$dominio/privkey.pem"
 
 # Validaciones previas para ciertas acciones
-if [ "$accion" == "crear" ] || [ "$accion" == "eliminar" ] || [ "$accion" == "activar" ] || [ "$accion" == "desactivar" ]; then
+if [ "$accion" == "crear" ] || [ "$accion" == "eliminar" ] || [ "$accion" == "activar" ] || [ "$accion" == "desactivar" ] || [ "$accion" == "verificar" ]; then
+    # Verificar si se proporcionó el nombre del subdominio
     if [ -z "$subdominio" ]; then
         echo "Error: Falta el nombre del subdominio."
         exit 1
@@ -46,15 +53,21 @@ case $accion in
             exit 1
         fi
 
-        # Crear directorio del subdominio y copiar archivos base
+        # Crear directorio del subdominio y copiar archivos base de un sitio web de demostración
         mkdir "$ruta_subdominio"
         cp -R /var/www/demo/* "$ruta_subdominio"
 
         # Limpiar archivos innecesarios en los directorios especificados
-        for dir in data_files adicionales conformidades_firmados conformidades_originales \
-                   files_consumidores documentos_firmados documentos_originales informes manuales temp; do
-            rm -rf "$ruta_subdominio/files/$dir/*"
-        done
+        rm /var/www/$subdominio/archivos/data_archivos/*
+        rm /var/www/$subdominio/archivos/data_archivos/adicionales/*
+        rm /var/www/$subdominio/archivos/data_archivos/conformidades_firmados/*
+        rm /var/www/$subdominio/archivos/data_archivos/conformidades_originales/*
+        rm /var/www/$subdominio/archivos/data_archivos/archivos_consumidores/*
+        rm /var/www/$subdominio/archivos/data_archivos/documentos_firmados/*
+        rm /var/www/$subdominio/archivos/data_archivos/documentos_originales/*
+        rm /var/www/$subdominio/archivos/data_archivos/informes/*
+        rm /var/www/$subdominio/archivos/data_archivos/manuales/*
+        rm /var/www/$subdominio/archivos/temp/*
 
         # Establecer permisos y propietario adecuados
         chown -R www-data:www-data "$ruta_subdominio"
@@ -101,6 +114,18 @@ EOF
             FLUSH PRIVILEGES;
         "
 
+        # Crear la base de datos demo y restaurar la copia de seguridad
+        mariadb-dump -u $subdominio -p"$passdb" demo > /var/www/$subdominio/demo.sql
+        mariadb -u root -e "CREATE DATABASE $subdominio"
+        mariadb -u root $subdominio < /var/www/$subdominio/demo.sql
+        mariadb -u root $subdominio -e "TRUNCATE TABLE logs;";
+        mariadb -u root -e "GRANT ALL PRIVILEGES ON $subdominio.* TO '$subdominio'@'localhost'";
+        mariadb -u root -e "FLUSH PRIVILEGES";
+        rm /var/www/$subdominio/demo.sql
+
+        # escribimos en un documento el nombre del subdominio para agregarlo al backup automatico de la base de datos
+        echo "$subdominio" >> /backups/databases/databases.txt
+
         # Mostrar credenciales de la base de datos
         echo "Base de datos: $subdominio"
         echo "Usuario: $subdominio"
@@ -133,22 +158,26 @@ EOF
         rm -rf "$ruta_subdominio"
         rm "$conf_file"
 
-        # Eliminar la base de datos y el usuario asociado 
+        # Eliminar la base de datos y el usuario asociado
         mariadb -u root -e "
             DROP DATABASE $subdominio;
             DROP USER '$subdominio'@'localhost';
             FLUSH PRIVILEGES;
         "
+        # Eliminar el nombre del subdominio del archivo de backup de bases de datos
+        sed -i "/$subdominio/d" /backups/databases/databases.txt
 
         echo "El subdominio $subdominio.$dominio ha sido eliminado correctamente."
-        ;;
+	;;
 
     "listar_creados")
-        find /etc/apache2/sites-available/ -name "*.conf" -print0 | xargs -0 -n1 basename | sed 's/\.conf$//'
+        #ls -1 /etc/apache2/sites-available/*.conf | xargs -n1 basename | sed 's/\.conf$//'
+	find /etc/apache2/sites-available/ -name "*.conf" -print0 | xargs -0 -n1 basename | sed 's/\.conf$//'
         ;;
 
     "listar_activos")
-        find /etc/apache2/sites-enabled/ -name "*.conf" -print0 | xargs -0 -n1 basename | sed 's/\.conf$//'
+        #ls -1 /etc/apache2/sites-enabled/*.conf | xargs -n1 basename | sed 's/\.conf$//'
+	find /etc/apache2/sites-enabled/ -name "*.conf" -print0 | xargs -0 -n1 basename | sed 's/\.conf$//'
         ;;
 
     "activar")
@@ -164,7 +193,7 @@ EOF
         ;;
 
     "verificar")
-        if [ -f "/etc/apache2/sites-available/$subdominio.$dominio.conf" ]; then
+        if [ -f /etc/apache2/sites-available/$subdominio.$dominio.conf ]; then
             echo "true"
         else
             echo "false"
